@@ -1,61 +1,48 @@
-// This class is used for encrypting or decrypting strings using character mapping
 public class Cipher   
 {
-    // Strings for keeping the alphabets, one for the original letters and the other for the encrypted ones
-    // encryption involves mapping from original to cipher, for each letter we locate the character in the
-    // original string and replace it with the cipher alphabet letter at the same position
     public static final String ORIGINAL_ALPHABET = "abcdefghijklmnopqrstuvwxyz";
     public static final String CIPHER_ALPHABET = "dfxyhrklvwuasgimnojpqetbcz";
 
+    // Encrypt the input string
     public String encrypt(String inputString) {
-        
-        // output string will be collected in this variable, one char at a time
-        String outputString = "";
-        
-        // for all chars in the input string
-        for (int i = 0; i < inputString.length(); i++)   
-        {
+        StringBuilder outputString = new StringBuilder();
 
+        for (int i = 0; i < inputString.length(); i++) {
+            char currentChar = inputString.charAt(i);
+            outputString.append(replaceChar(currentChar, true));
         }
 
-        return outputString;
+        return outputString.toString();
     }
 
+    // Decrypt the input string
     public String decrypt(String inputString) {
-        
-        // output string will be collected in this variable, one char at a time
-        String outputString = "";
-        
-        replaceChar('a',true);
-        
-        return outputString;
+        StringBuilder outputString = new StringBuilder();
+
+        for (int i = 0; i < inputString.length(); i++) {
+            char currentChar = inputString.charAt(i);
+            outputString.append(replaceChar(currentChar, false));
+        }
+
+        return outputString.toString();
     }
 
-    // replaces the given input char based on the given isEncrypt variable
-    // if isEncrypt == true -> original to encrypted
-    // if isEncrypt == false -> encrypted to original
-    // works only when the input char is included in our alphabet variables
-    // should not replace symbols or upper case letters, return input char in those cases
+    // Replaces the given input char based on the isEncrypt flag
     private char replaceChar(char inputChar, boolean isEncrypt) {
-        
-        if(isEncrypt) {
-            for (int i = 0; i < ORIGINAL_ALPHABET.length(); i++)   
-            {
-                if(ORIGINAL_ALPHABET.charAt(i) == inputChar) {
+        if (Character.isLetter(inputChar)) {
+            inputChar = Character.toLowerCase(inputChar);  // Handle lowercase only
 
-                }
-            }
-        }
-        else {
-            for (int i = 0; i < CIPHER_ALPHABET.length(); i++)   
-            {
-                if(CIPHER_ALPHABET.charAt(i) == inputChar) {
-                    return ORIGINAL_ALPHABET.charAt(i);
-                }
+            // Map from original to cipher or vice versa
+            String fromAlphabet = isEncrypt ? ORIGINAL_ALPHABET : CIPHER_ALPHABET;
+            String toAlphabet = isEncrypt ? CIPHER_ALPHABET : ORIGINAL_ALPHABET;
+
+            int index = fromAlphabet.indexOf(inputChar);
+            if (index != -1) {
+                return toAlphabet.charAt(index);
             }
         }
         
-        // if we did not find it in the alphabet, then return the original char
+        // Return original character if not found in alphabet (e.g., symbols or upper case letters)
         return inputChar;
     }
-}   
+}
