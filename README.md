@@ -9,3 +9,4 @@
   * **Commit** and **push** the fixed version of the program to your repository.
 
   * Finally open a **pull request** to the original repository.
+  * modifyng to be able to pull.
